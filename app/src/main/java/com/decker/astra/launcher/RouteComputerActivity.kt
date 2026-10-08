@@ -1,8 +1,10 @@
 package com.decker.astra.launcher
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.decker.astra.launcher.databinding.ActivityRouteComputerBinding
 import java.text.SimpleDateFormat
@@ -34,8 +36,14 @@ class RouteComputerActivity : AppCompatActivity() {
         uiHandler.post(updateTimer)
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (SteeringWheelController.handleKeyEvent(this, event.keyCode, event)) {
+            return true
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
     private fun initializeData() {
-        // Initial values
         binding.instantConsumptionNum.text = "7"
         binding.avgConsumptionNum.text = "6"
         binding.rangeNum.text = "428"
@@ -51,7 +59,6 @@ class RouteComputerActivity : AppCompatActivity() {
         binding.statusTime.text = timeFormat.format(now)
         binding.largeClockDisplay.text = timeFormat.format(now)
 
-        // Simulate dynamic data
         val instantConsumption = 6.5 + sin((elapsedSeconds / 10.0)) * 2.0
         val avgConsumption = 6.4 + sin((elapsedSeconds / 20.0)) * 0.3
         val range = 420 + (sin(elapsedSeconds / 30.0) * 20).toInt()
@@ -66,29 +73,18 @@ class RouteComputerActivity : AppCompatActivity() {
     }
 
     private fun setupButtonListeners() {
-        binding.btnRouteComputer.setOnClickListener {
-            // Already on this screen
-        }
-
+        binding.btnRouteComputer.setOnClickListener { }
         binding.btnMedia.setOnClickListener {
-            // TODO: Launch media activity
+            startActivity(Intent(this, MediaActivity::class.java))
         }
-
         binding.btnRadio.setOnClickListener {
-            // TODO: Launch radio activity
+            startActivity(Intent(this, RadioActivity::class.java))
         }
-
         binding.btnNav.setOnClickListener {
-            // TODO: Launch navigation activity
+            startActivity(Intent(this, NavigationActivity::class.java))
         }
-
-        binding.btnCar.setOnClickListener {
-            // TODO: Launch car diagnostics activity
-        }
-
-        binding.btnSettings.setOnClickListener {
-            // TODO: Launch settings activity
-        }
+        binding.btnCar.setOnClickListener { }
+        binding.btnSettings.setOnClickListener { }
     }
 
     override fun onDestroy() {

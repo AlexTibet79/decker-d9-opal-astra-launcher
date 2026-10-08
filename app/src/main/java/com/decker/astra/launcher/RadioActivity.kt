@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.decker.astra.launcher.databinding.ActivityRadioBinding
 import java.text.SimpleDateFormat
@@ -36,6 +37,13 @@ class RadioActivity : AppCompatActivity() {
         uiHandler.post(updateTimer)
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (SteeringWheelController.handleKeyEvent(this, event.keyCode, event)) {
+            return true
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
     private fun setupRadioDisplay() {
         binding.radioFreq.text = "105"
         binding.stationName.text = "FM Радіо"
@@ -43,32 +51,16 @@ class RadioActivity : AppCompatActivity() {
     }
 
     private fun setupButtonListeners() {
-        binding.btnRouteComputer.setOnClickListener {
-            navigateTo(RouteComputerActivity::class.java)
-        }
-
-        binding.btnMedia.setOnClickListener {
-            navigateTo(MediaActivity::class.java)
-        }
-
-        binding.btnNav.setOnClickListener {
-            navigateTo(NavigationActivity::class.java)
-        }
-
-        binding.btnCar.setOnClickListener {
-            // TODO: Launch car diagnostics
-        }
-
-        binding.btnSettings.setOnClickListener {
-            // TODO: Launch settings
-        }
+        binding.btnRouteComputer.setOnClickListener { finish() }
+        binding.btnMedia.setOnClickListener { navigateTo(MediaActivity::class.java) }
+        binding.btnNav.setOnClickListener { navigateTo(NavigationActivity::class.java) }
+        binding.btnCar.setOnClickListener { }
+        binding.btnSettings.setOnClickListener { }
     }
 
     private fun updateDisplay() {
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         binding.statusTime.text = timeFormat.format(Date())
-
-        // Simulate frequency drift
         currentFreq = 105.5 + sin((elapsedSeconds / 20.0)) * 5.0
         binding.radioFreq.text = currentFreq.toInt().toString()
         binding.signalBar.progress = (75 + sin(elapsedSeconds / 15.0) * 15).toInt()

@@ -4,23 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.decker.astra.launcher.databinding.ActivityNavigationBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.math.sin
 
 class NavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavigationBinding
     private val uiHandler = Handler(Looper.getMainLooper())
-    private var elapsedSeconds = 0
 
     private val updateTimer = object : Runnable {
         override fun run() {
             updateDisplay()
-            elapsedSeconds++
             uiHandler.postDelayed(this, 1000)
         }
     }
@@ -30,35 +28,23 @@ class NavigationActivity : AppCompatActivity() {
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupNavDisplay()
         setupButtonListeners()
         uiHandler.post(updateTimer)
     }
 
-    private fun setupNavDisplay() {
-        // Placeholder for GPS/navigation data
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (SteeringWheelController.handleKeyEvent(this, event.keyCode, event)) {
+            return true
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     private fun setupButtonListeners() {
-        binding.btnRouteComputer.setOnClickListener {
-            navigateTo(RouteComputerActivity::class.java)
-        }
-
-        binding.btnMedia.setOnClickListener {
-            navigateTo(MediaActivity::class.java)
-        }
-
-        binding.btnRadio.setOnClickListener {
-            navigateTo(RadioActivity::class.java)
-        }
-
-        binding.btnCar.setOnClickListener {
-            // TODO: Launch car diagnostics
-        }
-
-        binding.btnSettings.setOnClickListener {
-            // TODO: Launch settings
-        }
+        binding.btnRouteComputer.setOnClickListener { finish() }
+        binding.btnMedia.setOnClickListener { navigateTo(MediaActivity::class.java) }
+        binding.btnRadio.setOnClickListener { navigateTo(RadioActivity::class.java) }
+        binding.btnCar.setOnClickListener { }
+        binding.btnSettings.setOnClickListener { }
     }
 
     private fun updateDisplay() {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.decker.astra.launcher.databinding.ActivityMediaBinding
 import java.text.SimpleDateFormat
@@ -32,43 +33,27 @@ class MediaActivity : AppCompatActivity() {
         uiHandler.post(updateTimer)
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (SteeringWheelController.handleKeyEvent(this, event.keyCode, event)) {
+            return true
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
     private fun setupTrackInfo() {
         binding.trackTitle.text = "Placeholder Track"
         binding.trackArtist.text = "Unknown Artist"
     }
 
     private fun setupButtonListeners() {
-        binding.btnPlayPause.setOnClickListener {
-            // TODO: Toggle play/pause
-        }
-
-        binding.btnPrev.setOnClickListener {
-            // TODO: Previous track
-        }
-
-        binding.btnNext.setOnClickListener {
-            // TODO: Next track
-        }
-
-        binding.btnRouteComputer.setOnClickListener {
-            navigateTo(RouteComputerActivity::class.java)
-        }
-
-        binding.btnRadio.setOnClickListener {
-            navigateTo(RadioActivity::class.java)
-        }
-
-        binding.btnNav.setOnClickListener {
-            navigateTo(NavigationActivity::class.java)
-        }
-
-        binding.btnCar.setOnClickListener {
-            // TODO: Launch car diagnostics
-        }
-
-        binding.btnSettings.setOnClickListener {
-            // TODO: Launch settings
-        }
+        binding.btnPlayPause.setOnClickListener { }
+        binding.btnPrev.setOnClickListener { }
+        binding.btnNext.setOnClickListener { }
+        binding.btnRouteComputer.setOnClickListener { finish() }
+        binding.btnRadio.setOnClickListener { navigateTo(RadioActivity::class.java) }
+        binding.btnNav.setOnClickListener { navigateTo(NavigationActivity::class.java) }
+        binding.btnCar.setOnClickListener { }
+        binding.btnSettings.setOnClickListener { }
     }
 
     private fun updateTime() {
