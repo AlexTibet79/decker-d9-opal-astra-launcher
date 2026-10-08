@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Astra GID</string>
+    <string name="status_vehicle">Opel Astra H / GID</string>
+    <string name="label_speed">Speed</string>
+    <string name="label_rpm">RPM</string>
+    <string name="label_coolant">Coolant</string>
+    <string name="label_voltage">Battery</string>
+    <string name="label_can">CAN bus</string>
+    <string name="label_temp">Interior</string>
+    <string name="label_time">Time</string>
+    <string name="msg_elm_connected">ELM connected</string>
+    <string name="msg_elm_disconnected">ELM standby</string>
+    <string name="button_media">Media</string>
+    <string name="button_radio">Radio</string>
+    <string name="button_nav">Nav</string>
+    <string name="button_car">Car</string>
+    <string name="button_settings">Setup</string>
+</resources>
